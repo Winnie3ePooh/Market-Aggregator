@@ -1,0 +1,48 @@
+<div id="masthead">
+  <div class="container">
+    <div class="row">
+      <header class="text-center">
+        <h1>Что хотите найти?</h1>
+      </header>
+      <div class="row">
+        <div class="col-lg-6 col-centered">
+          <div class="input-group" style="margin-top: 50px">
+            <input type="text" class="form-control" #inp [(ngModel)]="forFinding" [ngModelOptions]="{standalone: true}" (keyup.enter)="findIt()">
+            <span class="input-group-btn">
+        <button class="btn btn-default" type="button" (click)="findIt()">Go!</button>
+      </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /cont -->
+</div>
+
+<!-- Begin Body -->
+<div class="container">
+  <div class="row">
+    <nav class="col-sm-3">
+      <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
+        <li><a href="#section1">Section 1</a></li>
+        <li><a href="#section2">Section 2</a></li>
+        <li><a href="#section3">Section 3</a></li>
+      </ul>
+    </nav>
+    <div class="col-sm-9" id="mainCol">
+        <div *ngIf="foundItems != []">
+          <div class="media" *ngFor="let item of foundItems">
+            <a class="pull-left" href="#">
+              <img class="media-object" src="{{item.galleryURL}}" alt="...">
+            </a>
+            <div class="media-body">
+              <h4 class="media-heading">{{item.title}}</h4>
+            </div>
+          </div>
+        </div>
+        <button (click)="loadMore()" class="btn btn-primary center-block">Ещё результаты</button>
+    </div>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,9 @@
+.col-centered{
+  margin: 0 auto;
+  float: none;
+}
+
+.affix {
+  top: 20px;
+}
+
