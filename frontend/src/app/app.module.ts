@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { MainPageComponent } from './main-page/main-page.component';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { JsonpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    JsonpModule
   ],
   providers: [
     CountryService,
