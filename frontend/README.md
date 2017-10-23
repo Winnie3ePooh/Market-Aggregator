@@ -5,7 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 #Demo
 
-`http://sites-aggregator.surge.sh/RU`
+`http://sites-aggregator.surge.sh/`
 
 ## Requirements
 
