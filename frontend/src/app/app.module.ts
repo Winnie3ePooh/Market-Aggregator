@@ -25,9 +25,9 @@ import { JsonpModule } from '@angular/http';
     BrowserModule,
     FormsModule,
     HttpModule,
+    JsonpModule,
     AppRoutingModule,
     InfiniteScrollModule,
-    JsonpModule
   ],
   providers: [
     CountryService,

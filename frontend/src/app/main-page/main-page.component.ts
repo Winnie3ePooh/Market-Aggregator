@@ -26,15 +26,13 @@ export class MainPageComponent implements OnInit {
   findIt(): void {
     this.foundItems = [];
     this.mainService.getResults(this.forFinding, this.pageNumber, this.location)
-      .then(ebayItems => this.foundItems.push.apply(this.foundItems, ebayItems));
+      .subscribe((data) => this.foundItems = data);
   }
 
   loadMore(): void {
     this.pageNumber += 1;
-    console.log(this.pageNumber);
     this.mainService.getResults(this.forFinding, this.pageNumber, this.location)
-      .then(ebayItems => this.foundItems.push.apply(this.foundItems, ebayItems));
-    console.log(this.foundItems);
+      .subscribe((data) => this.foundItems.push.apply(this.foundItems, data));
   }
 
   ngOnInit(): void {
