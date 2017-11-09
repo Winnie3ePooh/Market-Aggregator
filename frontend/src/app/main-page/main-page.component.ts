@@ -13,11 +13,32 @@ import {EbayItem} from '../models/EbayItem';
   styleUrls: ['./main-page.component.css']
 })
 export class MainPageComponent implements OnInit {
-  forFinding: string;
-  foundItems: EbayItem[] = [];
-  location: string;
-  pageNumber = 1;
+  private forFinding: string;
+  private foundItems: EbayItem[] = [];
+  private location: string;
+  private pageNumber = 1;
   private route;
+  currCategory = 1;
+  categories = [
+    { 'name' : 'All',
+      'id' : 1 },
+    { 'name' : 'Electronics',
+      'id' : 2 },
+  ];
+  filterarray = [
+    {'name': 'MaxPrice',
+      'value': '25',
+      'paramName': 'Currency',
+      'paramValue': 'USD'},
+    {'name': 'FreeShippingOnly',
+      'value': 'true',
+      'paramName': '',
+      'paramValue': ''},
+    {'name': 'ListingType',
+      'value': ['AuctionWithBIN', 'FixedPrice'],
+      'paramName': '',
+      'paramValue': ''},
+  ];
 
   constructor(
     private mainService: MainService,

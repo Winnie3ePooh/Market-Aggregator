@@ -17,7 +17,7 @@ export class MainService {
 
 
   getResults(forFinding: string, nextPage: number, location: string) {
-    this.ebayUrl += '?OPERATION-NAME=findItemsByKeywords';
+    this.ebayUrl += '?OPERATION-NAME=findItemsAdvanced';
     this.ebayUrl += '&SERVICE-VERSION=1.0.0';
     this.ebayUrl += '&SECURITY-APPNAME=MaximSte-Salesagg-PRD-5132041a0-a837000d';
     // this.ebayUrl += '&GLOBAL-ID=EBAY-US';
@@ -25,11 +25,12 @@ export class MainService {
     this.ebayUrl += '&callback=JSONP_CALLBACK';
     this.ebayUrl += '&REST-PAYLOAD';
     this.ebayUrl += '&keywords=' + forFinding.split(' ').join('%20');
+    this.ebayUrl += '&sortOrder=' + 'CurrentPriceHighest';
     this.ebayUrl += '&paginationInput.entriesPerPage=15';
     this.ebayUrl += '&paginationInput.pageNumber=' + nextPage;
     this.headers.append('Content-Type', 'application/json');
     return this.jsonp.get(this.ebayUrl).map(function (res: Response) {
-      return res.json().findItemsByKeywordsResponse[0].searchResult[0].item;
+      return res.json().findItemsAdvancedResponse[0].searchResult[0].item;
     });
   }
 

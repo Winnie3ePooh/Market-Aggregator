@@ -1,9 +1,4 @@
-.col-centered{
-  margin: 0 auto;
-  float: none;
+.search-menu {
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
-
-.affix {
-  top: 20px;
-}
-
