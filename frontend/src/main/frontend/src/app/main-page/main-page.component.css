@@ -1,0 +1,24 @@
+.search-menu {
+  width: 80%;
+  margin: 50px auto;
+}
+
+.main-component {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.img-container {
+  width: auto;
+  height:250px;
+  object-fit: contain;
+
+}
+
+.img-container img {
+  max-height:100%; max-width:100%;
+}
+
+.card {
+  margin-bottom: 10px;
+}

@@ -1,9 +1,0 @@
-<div class="container text-center">
-  <h1>Выберите страну</h1>
-  <select [(ngModel)]="selectedCountry" class="form-group">
-    <option *ngFor="let country of countries" [ngValue]="country.country_code" >{{country.country_name}}</option>
-  </select>
-  <button (click)="goToMainPage()">
-    Отправить!
-  </button>
-</div>
