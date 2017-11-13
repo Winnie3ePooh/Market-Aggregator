@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://methods" xmlns:tns="http://methods" >
+
+    <xs:element name="registryMarketRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+                <xs:element name="regions" minOccurs="0" type="tns:arrRegions"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="registryMarketResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="addRegionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+                <xs:element name="regions" type="tns:arrRegions"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+     <xs:complexType name="arrRegions">
+        <xs:sequence>
+            <xs:element name="region" minOccurs="1" maxOccurs="unbounded" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="addRegionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="msg" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="removeRegionRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+                <xs:element name="regions" type="tns:arrRegions"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="removeRegionResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="msg" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="sendItemsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+                <xs:element name="items" type="tns:ArrayOfItems"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="sendItemsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="msg" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="removeItemsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+                <xs:element name="uri" minOccurs="1" maxOccurs="unbounded" type="xs:anyURI"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="removeItemsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="msg" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateItemsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="token" type="xs:string"/>
+                <xs:element name="items" type="tns:ArrayOfUpdatedItems"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="ArrayOfUpdatedItems">
+        <xs:sequence>
+            <xs:element name="item" minOccurs="1" maxOccurs="unbounded" type="tns:UpdatedItem" />
+        </xs:sequence>
+    </xs:complexType>
+
+     <xs:complexType name="UpdatedItem">
+        <xs:sequence>
+            <xs:element name="uri" type="xs:anyURI"/> 
+            <xs:element name="region" minOccurs="0" maxOccurs="1" type="xs:string"/> 
+            <xs:element name="name" minOccurs="0" maxOccurs="1" type="xs:string"/> 
+            <xs:element name="description" minOccurs="0" maxOccurs="1" type="xs:string"/> 
+            <xs:element name="price" minOccurs="0" maxOccurs="1" type="xs:string"/> 
+            <xs:element name="photos" minOccurs="0" maxOccurs="1" type="tns:ArrayOfPhotos"/>
+            <xs:element name="adDateTime" minOccurs="0" maxOccurs="1" type="xs:string"/> 
+            <xs:element name="adLink" minOccurs="0" maxOccurs="1" type="xs:anyURI"/> 
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:element name="updateItemsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="msg" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="ArrayOfItems">
+        <xs:sequence>
+            <xs:element name="item" minOccurs="1" maxOccurs="unbounded" type="tns:Item" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Item">
+        <xs:sequence>
+            <xs:element name="uri" type="xs:anyURI"/>
+            <xs:element name="region" minOccurs="0" maxOccurs="1" type="xs:string" />
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="description" type="xs:string"/>
+            <xs:element name="price" type="xs:string"/>
+            <xs:element name="photos" minOccurs="0" type="tns:ArrayOfPhotos" />
+            <xs:element name="adDateTime" type="xs:string"/>
+            <xs:element name="adLink" type="xs:anyURI"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getLastUriRequest">
+        <xs:complexType>
+            <xs:sequence/>
+        </xs:complexType>
+    </xs:element>
+    
+
+    <xs:element name="getLastUriResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="uri" type="xs:anyURI"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:complexType name="ArrayOfPhotos">
+        <xs:sequence>
+            <xs:element name="link" minOccurs="1" maxOccurs="unbounded" type="xs:anyURI"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
