@@ -9,24 +9,25 @@
 package com.netcracker.sa.SOAP.methods;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for ArrayOfRemovedItems complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType>
+ * &lt;complexType name="ArrayOfRemovedItems">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}integer"/>
+ *         &lt;element name="uri" type="{http://www.w3.org/2001/XMLSchema}integer" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -36,37 +37,41 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
+@XmlType(name = "ArrayOfRemovedItems", propOrder = {
     "uri"
 })
-@XmlRootElement(name = "getLastUriResponse")
-public class GetLastUriResponse {
+public class ArrayOfRemovedItems {
 
     @XmlElement(required = true)
-    protected BigInteger uri;
+    protected List<BigInteger> uri;
 
     /**
      * Gets the value of the uri property.
      * 
-     * @return
-     *     possible object is
-     *     {@link BigInteger }
-     *     
-     */
-    public BigInteger getUri() {
-        return uri;
-    }
-
-    /**
-     * Sets the value of the uri property.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the uri property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link BigInteger }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getUri().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link BigInteger }
+     * 
+     * 
      */
-    public void setUri(BigInteger value) {
-        this.uri = value;
+    public List<BigInteger> getUri() {
+        if (uri == null) {
+            uri = new ArrayList<BigInteger>();
+        }
+        return this.uri;
     }
 
 }
