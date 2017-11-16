@@ -38,11 +38,11 @@ public class GoodsController {
                 return resultPage;
         };
 
-        @RequestMapping(path = "/findByKeyword")
+        @RequestMapping(path = "/findGoods")
         public @ResponseBody Page<Good> getGoodsByKeyword(@RequestParam(value = "keyword") String keyword,
                                                           @RequestParam(value = "page", defaultValue = "0") String page) {
                 Pageable pageable = new PageRequest(Integer.parseInt(page),18);
-                Page<Good> resultPage = goodRep.findByTitleContains(keyword,pageable);
+                Page<Good> resultPage = goodRep.findByTitleContainsIgnoreCase(keyword,pageable);
                 return resultPage;
         };
 

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { Country } from '../models/Country';
 import { CountryService } from './country.service';
+import {MainService} from '../main-page/main.service';
 
 @Component({
   selector: 'app-country-picker',
@@ -17,7 +18,8 @@ export class CountryPickerComponent implements OnInit {
 
   constructor(
     private countryService: CountryService,
-    private router: Router) { }
+    private router: Router,
+    private mainService: MainService) { }
 
   getCountries(): void {
     this.countryService
@@ -26,7 +28,8 @@ export class CountryPickerComponent implements OnInit {
   }
 
   goToMainPage(): void {
-    console.log((this.selectedCountry))
+    this.mainService.setLocalKeyword('');
+    console.log((this.selectedCountry));
     if (typeof this.selectedCountry === 'undefined') {
       this.selectedCountry = 'US';
     };

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from '../app.component';
 import { CountryPickerComponent } from '../country-picker/country-picker.component';
 import {MainPageComponent} from '../main-page/main-page.component';
+import {ItemDetailsComponent} from '../item-details/item-details.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,9 @@ export const routes: Routes = [
   },
   {
     path: ':location', component: MainPageComponent
+  },
+  {
+    path: 'item/:id', component: ItemDetailsComponent
   }
 ];
 

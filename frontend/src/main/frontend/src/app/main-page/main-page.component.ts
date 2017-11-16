@@ -14,6 +14,7 @@ import {Shop} from '../models/Shop';
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.css']
 })
+
 export class MainPageComponent implements OnInit {
   private forFinding: string;
   private foundItems: EbayItem[] = [];
@@ -37,12 +38,12 @@ export class MainPageComponent implements OnInit {
   }
 
   findIt(): void {
+    this.mainService.setLocalKeyword(this.forFinding);
     this.mainService.findByKeyword(this.forFinding)
       .then(res => this.setItems(res));
   };
 
   getNextPageResults(page: number): void {
-    console.log(this.forFinding);
     if (typeof this.forFinding === 'undefined') {
       this.mainService.getRandomItems(page).then(res => this.setItems(res));
     } else {
@@ -58,8 +59,9 @@ export class MainPageComponent implements OnInit {
         this.location = location;
       });
     this.mainService.getShops(this.location).then(res => this.shopList = res);
-    console.log(this.shopList);
-    this.mainService.getRandomItems().then(res => this.setItems(res));
+    this.mainService.getRandomItems(+(this.mainService.getLocalPage()) - 1,
+      this.mainService.getLocalKeyword())
+      .then(res => this.setItems(res));
   }
 
   setPage(page: number) {
@@ -68,5 +70,6 @@ export class MainPageComponent implements OnInit {
     }
     // get pager object from service
     this.pager = this.pagerService.getPager(this.totalElements, page);
+    this.mainService.setLocalPage(this.pager.currentPage);
   }
 }

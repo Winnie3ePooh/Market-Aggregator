@@ -1,10 +1,12 @@
 package com.netcracker.sa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.tomcat.jni.Local;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -17,6 +19,12 @@ public class Shop {
 
     @NotNull
     private String name;
+
+    @NotNull
+    private String token;
+
+    @NotNull
+    private LocalDate lastUpdate;
 
     @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JoinColumn(name = "region_id")
@@ -31,8 +39,10 @@ public class Shop {
 
     public Shop() {};
 
-    public Shop(String name) {
+    public Shop(String name, String token, LocalDate lastUpdate) {
         this.name = name;
+        this.token = token;
+        this.lastUpdate = lastUpdate;
     }
 
     //@Transactional
@@ -42,6 +52,10 @@ public class Shop {
     //@Transactional
     public void setRegions(List<Region> regions){
         this.getRegions().addAll(regions);
+    }
+
+    public LocalDate getLastUpdate() {
+        return lastUpdate;
     }
 
     public String getName() {

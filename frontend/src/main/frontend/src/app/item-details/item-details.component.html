@@ -1,0 +1,41 @@
+<div class="search-menu text-center">
+  <div class="row align-items-center justify-content-center">
+    <h1 class="text-center">Что хотите найти?</h1>
+  </div>
+  <div class="row align-items-center justify-content-center">
+    <div class="col">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for..." #inp [(ngModel)]="forFinding" [ngModelOptions]="{standalone: true}" (keyup.enter)="findIt()">
+        <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" (click)="findIt()">Go!</button>
+              </span>
+      </div>
+    </div>
+  </div>
+</div><!-- /cont -->
+
+<div class="main-component">
+  <div class="col-sm-12 contpost">
+    <div class="row">
+      <div class="col PostTitle">
+        <h4><a href="#">{{item.title}}</a></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-5" style="border: 1px solid black;">
+        <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+      </div>
+      <div class="col-sm-7">
+        <p>
+          {{item.description}}
+        </p>
+        <p><a class="btn btn-sm btn-success" href="#">Leer más</a></p>
+      </div>
+    </div>
+    <div>
+      <a (click)="goBack()">
+        Назад
+      </a>
+    </div>
+  </div>
+</div>

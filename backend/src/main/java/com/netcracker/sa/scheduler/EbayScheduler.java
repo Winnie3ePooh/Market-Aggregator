@@ -42,9 +42,11 @@ public class EbayScheduler {
     private CategoryRepository categoryRep;
     @Autowired
     private RegionRepository regionRep;
+    @Autowired
+    private ImageRepository imgRep;
 
     private final String USER_AGENT = "Mozilla/5.0";
-    private final String url = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByCategory&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=MaximSte-Salesagg-PRD-5132041a0-a837000d&RESPONSE-DATA-FORMAT=XML&REST-PAYLOAD=&categoryId=293&paginationInput.entriesPerPage=100&paginationInput.pageNumber=";
+    private final String url = "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsAdvanced&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=MaximSte-Salesagg-PRD-5132041a0-a837000d&RESPONSE-DATA-FORMAT=XML&REST-PAYLOAD=&categoryId=293&paginationInput.entriesPerPage=100&paginationInput.pageNumber=";
 
     private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
@@ -54,9 +56,9 @@ public class EbayScheduler {
 
     }
 
-    public String sendRequest(int pageNumber) {
+    public String sendRequest(int pageNumber, String... params) {
         try {
-            URL obj = new URL(url+pageNumber);
+            URL obj = new URL(url+pageNumber+params);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             // optional default is GET
             con.setRequestMethod("GET");
@@ -94,29 +96,38 @@ public class EbayScheduler {
             is.setCharacterStream(new StringReader(xmlRecords));
 
             // С ЭТОЙ СТРОЧКИ ДО 114 ПРИМЕР КАК ДЕЛАТЬ СВЯЗЬ МНОГИЕ КО МНОГИМ
-
-//            regionRep.save(new Region("WW"));
             Region reg = regionRep.findByName("WW");
+            if(reg == null){
+                regionRep.save(new Region("WW"));
+                reg = regionRep.findByName("WW");
+            }
 
-//            List<Region> regs = new ArrayList<Region>();
-//            regs.add(reg);
+            List<Region> regs = new ArrayList<Region>();
+            regs.add(reg);
 
-//            shopRep.save(new Shop("Ebay"));
+            //shopRep.save(new Shop("Ebay","asdasd",LocalDate.now()));
             Shop shop = shopRep.findByName("Ebay");
+            if(shop == null){
+                shopRep.save(new Shop("Ebay","asdasd",LocalDate.now()));
+                shop = shopRep.findByName("Ebay");
+            }
 
-//            List<Shop> shops = new ArrayList<Shop>();
-//            shops.add(shop);
+            List<Shop> shops = new ArrayList<Shop>();
+            shops.add(shop);
 
-            //shop.setRegions(regs);
-            //reg.setShops(shops);
-            //regionRep.save(reg);
-            //shopRep.save(shop);
-            System.out.println(shop.getRegions());
-            System.out.println(reg.getShops());
+            shop.setRegions(regs);
+            reg.setShops(shops);
+            regionRep.save(reg);
+            shopRep.save(shop);
+//            System.out.println(shop.getRegions());
+//            System.out.println(reg.getShops());
 
-
-            categoryRep.save(new Category("Electronics"));
             Category cat = categoryRep.findByName("Electronics");
+            if(cat == null){
+                categoryRep.save(new Category("Electronics"));
+                cat = categoryRep.findByName("Electronics");
+            }
+
             System.out.println(cat);
 
             Document doc = db.parse(is);
@@ -161,8 +172,17 @@ public class EbayScheduler {
                     getCharacterDataFromElement(element, "title"),getCharacterDataFromElement(element, "title"),
                     getCharacterDataFromElement(element, "startTime"), getCharacterDataFromElement(element, "endTime"),
                     Float.parseFloat(getCharacterDataFromElement(element, "currentPrice")),
-                    getCharacterDataFromElement(element, "galleryURL"),getCharacterDataFromElement(element, "viewItemURL"),
-                    sub));
+                    getCharacterDataFromElement(element, "viewItemURL"), sub)
+            );
+
+            Good good = goodRep.findFirstByUriOrderByIdDesc(getCharacterDataFromElement(element, "itemId"));
+            Image img = imgRep.save(new Image(getCharacterDataFromElement(element, "galleryURL")));
+            List<Image> imgs = new ArrayList<Image>();
+            imgs.add(img);
+            img.setGood(good);
+            good.setImages(imgs);
+            goodRep.save(good);
+            imgRep.save(img);
         }
     }
 
@@ -188,9 +208,12 @@ public class EbayScheduler {
 
     }
 
-
+    @Scheduled(fixedRate = 100000)
     public void updateDB() {
-
+        Shop shop = shopRep.findByName("Ebay");
+        //String params = "&StartTimeFrom"
+        //goodRep.deleteByEndDateLessThanEqual(LocalDate.now());
+        System.out.println(shop.getLastUpdate().atStartOfDay(ZoneOffset.UTC));
     }
 
 }
