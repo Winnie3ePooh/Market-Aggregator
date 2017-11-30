@@ -13,10 +13,10 @@ import { MainPageComponent } from './main-page/main-page.component';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { JsonpModule } from '@angular/http';
-import {PageService} from './page.service';
+import { PageService } from './page.service';
 import { ItemDetailsComponent } from './item-details/item-details.component';
-import {NgxGalleryModule} from 'ngx-gallery';
-
+import { NgxGalleryModule } from 'ngx-gallery';
+import {MultiselectDropdownModule} from 'angular-2-dropdown-multiselect';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import {NgxGalleryModule} from 'ngx-gallery';
     JsonpModule,
     AppRoutingModule,
     InfiniteScrollModule,
-    NgxGalleryModule
+    NgxGalleryModule,
+    MultiselectDropdownModule
   ],
   providers: [
     CountryService,

@@ -6,6 +6,9 @@ import 'rxjs/add/operator/switchMap';
 import {NgxGalleryImage, NgxGalleryOptions} from 'ngx-gallery';
 import {Location} from '@angular/common';
 
+declare var jquery: any;
+declare var $: any;
+
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.component.html',
@@ -45,7 +48,7 @@ export class ItemDetailsComponent implements OnInit {
         big: img.imageURL
       }
     });
-    console.log(this.galleryOptions);
+    $('.ngx-gallery-icon').css({color: 'black'});
   }
 
   goBack() {

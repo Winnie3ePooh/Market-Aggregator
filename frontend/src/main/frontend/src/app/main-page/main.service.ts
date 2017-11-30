@@ -4,6 +4,7 @@ import { Http, Response, Headers, Jsonp} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import {Shop} from '../models/Shop';
+import {Category} from '../models/Category';
 
 @Injectable()
 export class MainService {
@@ -15,12 +16,14 @@ export class MainService {
   getShops(region: string) {
     return this.http.get('/api/getShops?region=' + region).toPromise()
       .then(
-        res => res.json() as Shop[]
-      );
+        res => {
+          return res.json();
+        });
   };
 
-  findByKeyword(keyword: string, page = 0) {
-    return this.http.get('/api/findGoods?keyword=' + keyword.split(' ').join('%20')
+  findByKeyword(category: string = '', keyword: string = ' ', page = 0) {
+    return this.http.get('/api/findGoods?category=' + category
+    + '&keyword=' + keyword.split(' ').join('%20')
     + '&page=' + page).toPromise()
       .then(
         res => {
@@ -30,8 +33,9 @@ export class MainService {
       )
   }
 
-  getRandomItems(page = 0, keyword = '') {
-    return this.http.get('/api/findGoods?keyword=' + keyword + '&page=' + page).toPromise()
+  getRandomItems(page = 0, category: string, keyword = '') {
+    return this.http.get('/api/findGoods?category=' + category
+    + '&keyword=' + keyword + '&page=' + page).toPromise()
       .then(
         res => {
           this.items = res.json().content;
@@ -49,7 +53,9 @@ export class MainService {
   }
 
   getLocalPage() {
-    return localStorage.getItem('page');
+    if ( +localStorage.getItem('page') === 0 ) {
+      return 1;
+    } else return localStorage.getItem('page');
   }
 
   setLocalKeyword(keyword: string) {
@@ -58,6 +64,16 @@ export class MainService {
 
   getLocalKeyword() {
     return localStorage.getItem('keyword');
+  }
+
+  getCategories() {
+    return this.http.get('/api/getAllCategories').toPromise()
+      .then( res => res.json() as Category[] );
+  }
+
+  setSelectedShops(shopsIds: number[]) {
+    this.http.post('/api/setShops', shopsIds).toPromise()
+      .then(res => console.log(''));
   }
 
 }

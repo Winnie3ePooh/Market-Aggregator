@@ -15,27 +15,37 @@
 </div><!-- /cont -->
 
 <div class="main-component">
-  <div class="col-sm-12 contpost">
-    <div class="row">
-      <div class="col PostTitle">
-        <h4><a href="#">{{item.title}}</a></h4>
+  <div class="card">
+    <div class="container-fliud">
+      <div class="wrapper row">
+        <div class="preview col-md-6">
+          <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+        </div>
+        <div class="details col-md-6">
+          <h3 class="product-title">{{item.title}}</h3>
+          <div class="rating">
+            <div class="stars">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            <span class="review-no">41 reviews</span>
+          </div>
+          <p class="product-description">{{item.description}}</p>
+          <h4 class="price">current price: <span>{{item.cost}}</span></h4>
+          <div class="action" style="position: absolute; bottom: 0px;">
+            <button class="add-to-cart btn btn-default" type="button"><a href="{{item.url}}">Просмотреть</a></button>
+            <button class="like btn btn-default" type="button"><span class="fa fa-bell"></span></button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-5" style="border: 1px solid black;">
-        <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-      </div>
-      <div class="col-sm-7">
-        <p>
-          {{item.description}}
-        </p>
-        <p><a class="btn btn-sm btn-success" href="#">Leer más</a></p>
-      </div>
-    </div>
-    <div>
-      <a (click)="goBack()">
-        Назад
-      </a>
+  </div>
+  <div class="back">
+    <div class="action">
+      <button class="add-to-cart btn btn-default" type="button"><a (click)="goBack()"><span class="fa fa-arrow-left"></span> Назад</a></button>
     </div>
   </div>
 </div>

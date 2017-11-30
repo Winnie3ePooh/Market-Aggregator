@@ -1,5 +1,7 @@
 package com.netcracker.sa.entity;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
@@ -34,14 +36,19 @@ public class Good {
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 
-    @OneToMany(mappedBy = "good", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "good")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Image> images;
+
+    @ManyToOne
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
 
     public Good(){};
 
     public Good(String uri, String title, String description, String creationDate, String endDate,
                 Float price,
-                String url, Subcategory subcategory){
+                String url, Subcategory subcategory, Shop shop){
         this.uri = uri;
         this.title = title;
         this.description = description;
@@ -50,6 +57,7 @@ public class Good {
         this.price = price;
         this.url = url;
         this.subcategory = subcategory;
+        this.shop = shop;
     };
 
     public Long getId() {
@@ -78,6 +86,7 @@ public class Good {
     public Subcategory getSubcategory() {
         return subcategory;
     }
+    public Shop getShop() {return shop; };
 
     @Transactional
     public List<Image> getImages() {
@@ -88,6 +97,7 @@ public class Good {
     public void setImages(List<Image> images) {
         this.getImages().addAll(images);
     }
+
 
     public String toString() {
         return "Good [id=" + this.id +

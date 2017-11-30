@@ -58,7 +58,7 @@ public class EbayScheduler {
 
     public String sendRequest(int pageNumber, String... params) {
         try {
-            URL obj = new URL(url+pageNumber+params);
+            URL obj = new URL(url+pageNumber);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             // optional default is GET
             con.setRequestMethod("GET");
@@ -105,7 +105,7 @@ public class EbayScheduler {
             List<Region> regs = new ArrayList<Region>();
             regs.add(reg);
 
-            //shopRep.save(new Shop("Ebay","asdasd",LocalDate.now()));
+            shopRep.save(new Shop("Ebay","asdasd",LocalDate.now()));
             Shop shop = shopRep.findByName("Ebay");
             if(shop == null){
                 shopRep.save(new Shop("Ebay","asdasd",LocalDate.now()));
@@ -119,8 +119,6 @@ public class EbayScheduler {
             reg.setShops(shops);
             regionRep.save(reg);
             shopRep.save(shop);
-//            System.out.println(shop.getRegions());
-//            System.out.println(reg.getShops());
 
             Category cat = categoryRep.findByName("Electronics");
             if(cat == null){
@@ -128,21 +126,20 @@ public class EbayScheduler {
                 cat = categoryRep.findByName("Electronics");
             }
 
-            System.out.println(cat);
-
             Document doc = db.parse(is);
             NodeList page = doc.getElementsByTagName("paginationOutput");
-            parseResponse(doc,cat);
+            System.out.println("------------------------------------------------------------------------------");
+            parseResponse(doc,cat,shop);
 
-
-
+            System.out.println(getCharacterDataFromElement((Element) page.item(0), "categoryName"));
             for(int j = 2; j <= Integer.parseInt(getCharacterDataFromElement((Element) page.item(0), "totalPages")); j++) {
+                System.out.println("222222222222222222222222222222222");
                 xmlRecords = sendRequest(j);
 
                 is.setCharacterStream(new StringReader(xmlRecords));
 
                 doc = db.parse(is);
-                parseResponse(doc,cat);
+                parseResponse(doc,cat,shop);
             };
             log.info("ENDING", dateFormat.format(new Date()));
 
@@ -157,7 +154,7 @@ public class EbayScheduler {
 
     }
 
-    public void parseResponse(Document doc, Category cat) {
+    public void parseResponse(Document doc, Category cat, Shop shop) {
         NodeList nodes = doc.getElementsByTagName("item");
 
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -172,7 +169,7 @@ public class EbayScheduler {
                     getCharacterDataFromElement(element, "title"),getCharacterDataFromElement(element, "title"),
                     getCharacterDataFromElement(element, "startTime"), getCharacterDataFromElement(element, "endTime"),
                     Float.parseFloat(getCharacterDataFromElement(element, "currentPrice")),
-                    getCharacterDataFromElement(element, "viewItemURL"), sub)
+                    getCharacterDataFromElement(element, "viewItemURL"), sub, shop)
             );
 
             Good good = goodRep.findFirstByUriOrderByIdDesc(getCharacterDataFromElement(element, "itemId"));
@@ -208,12 +205,16 @@ public class EbayScheduler {
 
     }
 
-    @Scheduled(fixedRate = 100000)
+    //@Scheduled(fixedRate = 100000)
     public void updateDB() {
-        Shop shop = shopRep.findByName("Ebay");
+        //Shop shop = shopRep.findByName("Ebay");
         //String params = "&StartTimeFrom"
         //goodRep.deleteByEndDateLessThanEqual(LocalDate.now());
-        System.out.println(shop.getLastUpdate().atStartOfDay(ZoneOffset.UTC));
+        //System.out.println(shop.getLastUpdate().atStartOfDay(ZoneOffset.UTC));
+//        Iterable<Subcategory> sub = subcategoryRep.findAll();
+//        for(Subcategory s: sub){
+//            System.out.println(s);
+//        }
     }
 
 }

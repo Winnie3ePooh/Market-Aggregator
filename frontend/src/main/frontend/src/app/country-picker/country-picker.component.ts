@@ -14,7 +14,7 @@ export class CountryPickerComponent implements OnInit {
 
   term: string;
   countries: Country[];
-  selectedCountry: string;
+  selectedCountry: Country;
 
   constructor(
     private countryService: CountryService,
@@ -23,17 +23,17 @@ export class CountryPickerComponent implements OnInit {
 
   getCountries(): void {
     this.countryService
-      .getCountries()
+      .getRegions()
       .then(countries => this.countries = countries);
   }
 
   goToMainPage(): void {
     this.mainService.setLocalKeyword('');
     console.log((this.selectedCountry));
-    if (typeof this.selectedCountry === 'undefined') {
-      this.selectedCountry = 'US';
-    };
-    this.router.navigate(['', this.selectedCountry]);
+    // if (this.selectedCountry === {}) {
+    //   this.selectedCountry.name = 'WW';
+    // };
+    this.router.navigate(['', this.selectedCountry.name]);
   }
 
   ngOnInit() {

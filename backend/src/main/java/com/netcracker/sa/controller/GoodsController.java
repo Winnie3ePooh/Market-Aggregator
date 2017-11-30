@@ -20,30 +20,62 @@ import java.util.List;
 @RequestMapping(path = "/api")
 public class GoodsController {
 
-        @Autowired
-        private GoodRepository goodRep;
-        @Autowired
-        private RegionRepository regionRep;
+    private List<Shop> shops;
 
-        @RequestMapping(path = "/getShops")
-        public @ResponseBody List<Shop> getShopsByRegion(@RequestParam(value = "region", defaultValue = "WW") String region) {
-                Region reg = regionRep.findByName(region);
-                List<Shop> shops = reg.getShops();
-                return shops;
-        };
+    @Autowired
+    private GoodRepository goodRep;
+    @Autowired
+    private RegionRepository regionRep;
+    @Autowired
+    private ShopRepository shopRep;
 
-        @RequestMapping(path = "/getAll")
-        public @ResponseBody Page<Good> getGoodForMainPage(@RequestParam(value = "page", defaultValue = "0") String page) {
-                Page<Good> resultPage = goodRep.findAll(new PageRequest(Integer.parseInt(page),18));
-                return resultPage;
-        };
+    @RequestMapping(path = "/getShops")
+    public @ResponseBody List<Shop> getShopsByRegion(@RequestParam(value = "region", defaultValue = "WW") String region) {
+        Region reg = regionRep.findByName(region);
+        shops = reg.getShops();
+        return shops;
+    };
 
-        @RequestMapping(path = "/findGoods")
-        public @ResponseBody Page<Good> getGoodsByKeyword(@RequestParam(value = "keyword") String keyword,
-                                                          @RequestParam(value = "page", defaultValue = "0") String page) {
-                Pageable pageable = new PageRequest(Integer.parseInt(page),18);
-                Page<Good> resultPage = goodRep.findByTitleContainsIgnoreCase(keyword,pageable);
-                return resultPage;
+    @RequestMapping(path = "/getAll")
+    public @ResponseBody Page<Good> getGoodForMainPage(@RequestParam(value = "page", defaultValue = "0") String page,
+                                                       @RequestParam(value = "category", defaultValue = "All") String category) {
+
+
+        if(category.equals("All")) {
+            Page<Good> resultPage = goodRep.findByShopIn(new PageRequest(Integer.parseInt(page),18),shops);
+            System.out.println(shops);
+            return resultPage;
+        } else {
+            Page<Good> resultPage = goodRep.findBySubcategoryCategoriesAndShopIn(new PageRequest(Integer.parseInt(page),18),shops, Long.parseLong(category));
+            System.out.println(shops);
+            return resultPage;
+        }
+    };
+
+    @RequestMapping(path = "/findGoods")
+    public @ResponseBody Page<Good> getGoodsByKeyword(@RequestParam(value = "keyword") String keyword,
+                                                      @RequestParam(value = "page", defaultValue = "0") String page) {
+        Pageable pageable = new PageRequest(Integer.parseInt(page),18);
+        Page<Good> results = goodRep.findByShopInAndTitleContainsIgnoreCase(shops,keyword,pageable);
+        return results;
+    };
+
+    @RequestMapping(path = "/findGoodsBySubcategory")
+    public @ResponseBody Page<Good> findGoodsBySubcategory(@RequestParam(value = "keyword") String keyword,
+                                                           @RequestParam(value = "subcategory") String subcategory,
+                                                           @RequestParam(value = "page", defaultValue = "0") String page) {
+        Pageable pageable = new PageRequest(Integer.parseInt(page),18);
+        Page<Good> results  = goodRep.findByShopInAndTitleContainsIgnoreCaseAndSubcategoryId(pageable, shops, keyword, Long.parseLong(subcategory));
+        return results;
+    };
+
+    @RequestMapping(path = "/setShops", method = RequestMethod.POST)
+    public @ResponseBody String setSelectedShops(@RequestBody Long[] shops_id){
+        shops = shopRep.findByIdIn(shops_id);
+        for(Shop i: shops){
+            System.out.println(i);
         };
+        return "ok";
+    };
 
 }

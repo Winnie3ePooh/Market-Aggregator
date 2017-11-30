@@ -26,6 +26,14 @@ public class Region {
         this.name = name;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     //@Transactional
     public List<Shop> getShops() {
         return shops;

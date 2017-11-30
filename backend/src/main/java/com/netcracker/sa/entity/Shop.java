@@ -21,9 +21,11 @@ public class Shop {
     private String name;
 
     @NotNull
+    @JsonIgnore
     private String token;
 
     @NotNull
+    @JsonIgnore
     private LocalDate lastUpdate;
 
     @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
@@ -33,9 +35,10 @@ public class Shop {
                 inverseJoinColumns = @JoinColumn(name = "region_id"))
     @JsonIgnore
     private List<Region> regions;
-//
-//    @OneToMany(mappedBy = "shop", fetch = FetchType.EAGER)
-//    private Set<Good> goods;
+
+    @OneToMany(mappedBy = "shop", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Good> goods;
 
     public Shop() {};
 
@@ -58,6 +61,10 @@ public class Shop {
         return lastUpdate;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -65,4 +72,5 @@ public class Shop {
     public String toString() {
         return "Shop [name = " + this.name + "]";
     }
+
 }

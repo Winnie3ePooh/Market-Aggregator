@@ -1,6 +1,7 @@
 package com.netcracker.sa.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -35,10 +36,12 @@ public class Image {
         return imageURL;
     }
 
+
+    @Transactional
     public Good getGood() {
         return good;
     }
-
+    @Transactional
     public void setGood(Good good) {
         this.good = good;
     }

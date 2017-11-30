@@ -38,4 +38,8 @@ public class Subcategory {
         return name;
     }
 
+
+    public String toString() {
+        return "Subcat: "+this.name+" "+this.goods;
+    }
 }

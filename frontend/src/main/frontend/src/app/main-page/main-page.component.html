@@ -3,13 +3,24 @@
         <h1 class="text-center">Что хотите найти?</h1>
       </div>
       <div class="row align-items-center justify-content-center">
-          <div class="col">
+          <div class="col-2">
+            <select [(ngModel)]="selectedCategory" class="custom-select col">
+              <option selected [ngValue]="All">All</option>
+              <option *ngFor="let category of categories" [ngValue]="category.id" >
+                {{category.name}}
+              </option>
+            </select>
+          </div>
+          <div class="col no-padding">
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for..." #inp [(ngModel)]="forFinding" [ngModelOptions]="{standalone: true}" (keyup.enter)="findIt()">
               <span class="input-group-btn">
                 <button class="btn btn-secondary" type="button" (click)="findIt()">Go!</button>
               </span>
             </div>
+          </div>
+          <div id="shops">
+            <ss-multiselect-dropdown [options]="shopList" [settings]="mySettings" [texts]="myTexts" [(ngModel)]="selectedShops" (ngModelChange)="onChange($event)"></ss-multiselect-dropdown>
           </div>
       </div>
   </div><!-- /cont -->
@@ -18,17 +29,32 @@
 <div class="main-component">
   <div class="row">
     <div class="col-2">
-        <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="205">
+        <ul class="nav nav-pills nav-stacked subcat" data-spy="affix" data-offset-top="205">
+          <li>
+            <ul class="subcat-layout">
+              <li>1</li>
+              <li>2</li>
+              <li>3</li>
+              <li>4</li>
+              <li>5</li>
+              <li>6</li>
+              <li>7</li>
+              <li>8</li>
+              <li>9</li>
+              <li>10</li>
+              <li>11</li>
+            </ul>
+          </li>
           <li>
             <form>
               <div class="form-group">
-                <label for="exampleInputName2">Name</label>
-                <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+                <label>Цена</label>
+                <div class="col price">
+                  <input class="text" type="text" class="form-control" id="minPrice" placeholder="0">
+                  <input type="text" class="form-control" id="maxPrice" placeholder="0">
+                </div>
               </div>
-              <div class="form-group">
-                <label for="exampleInputEmail2">Email</label><br>
-                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
-              </div>
+
               <button type="submit" class="btn btn-default">Send invitation</button>
             </form>
           </li>
@@ -37,41 +63,100 @@
         </ul>
     </div>
     <div class="col">
-      <div class="row" *ngIf="foundItems != []">
-          <div class="card card-block col-4" *ngFor="let item of foundItems">
-            <a [routerLink]="['/item', item.id]">
-              <div class="img-container" id="img-container">
-                <img class="card-img-top" src="{{item.images[0].imageURL}}" alt="Card image cap">
-              </div>
-              <div class="card-block">
-                <h4 class="card-title">{{item.title}}</h4>
-                <p class="card-text">{{item.title}}</p>
+      <div class="row">
+          <ul class="list-inline">
+            <li class="list-inline-item">Сортировать:</li>
+            <li class="list-inline-item">по цене</li>
+            <li class="list-inline-item">по дате</li>
+          </ul>
+      </div>
+      <div *ngIf="foundItems.length !== 0;then content else other_content">here is ignored</div>
+      <ng-template #content>
+        <div class="row" *ngIf="foundItems != []">
+          <div class="col-xs-12 col-lg-4 col-md-6 col-sm-9" *ngFor="let item of foundItems">
+            <a [routerLink]="['']">
+              <div class="col-item">
+                <div class="photo">
+                  <img src="{{item.images[0].imageURL}}" class="img-container" alt="a" />
+                </div>
+                <div class="info">
+                  <div class="row">
+                    <div class="price col">
+                      <h5>{{item.title}}</h5>
+                      <h5 class="price-text-color">{{item.cost}}</h5>
+                    </div>
+                  </div>
+                  <div class="separator clear-left">
+                    <p class="btn-add">
+                      <i class="fa fa-shopping-cart"></i><a href="{{item.url}}" class="hidden-sm">Add to cart</a></p>
+                    <p class="btn-details">
+                      <i class="fa fa-list"></i><a [routerLink]="['/item', item.id]" class="hidden-sm">More details</a></p>
+                  </div>
+                  <div class="clearfix">
+                  </div>
+                </div>
               </div>
             </a>
           </div>
+        </div>
+      </ng-template>
+      <ng-template #other_content>
+        <img src="https://www.stihi.ru/pics/2013/10/24/10473.jpg">
+      </ng-template>
+      <div class="row justify-content-center pages">
+        <div class="col-auto">
+          <ul class="pagination" *ngIf="pager.pages && pager.pages.length">
+            <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+              <a class="page-link" (click)="getNextPageResults(0); setPage(1)">First</a>
+            </li>
+            <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+              <a class="page-link" (click)="getNextPageResults(pager.currentPage - 2); setPage(pager.currentPage - 1)">Previous</a>
+            </li>
+            <li class="page-item"  *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a class="page-link" (click)="getNextPageResults(page-1); setPage(page);">{{page}}</a>
+            </li>
+            <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a class="page-link" (click)="getNextPageResults(pager.currentPage); setPage(pager.currentPage + 1)">Next</a>
+            </li>
+            <li class="page-item"  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a class="page-link" (click)="getNextPageResults(pager.totalPages-1); setPage(pager.totalPages)">Last</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-4"></div>
-    <div class="col">
-      <ul class="pagination" *ngIf="pager.pages && pager.pages.length">
-        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
-          <a class="page-link" (click)="getNextPageResults(0); setPage(1)">First</a>
-        </li>
-        <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
-          <a class="page-link" (click)="getNextPageResults(pager.currentPage - 2); setPage(pager.currentPage - 1)">Previous</a>
-        </li>
-        <li class="page-item"  *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-          <a class="page-link" (click)="getNextPageResults(page-1); setPage(page);">{{page}}</a>
-        </li>
-        <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-          <a class="page-link" (click)="getNextPageResults(pager.currentPage); setPage(pager.currentPage + 1)">Next</a>
-        </li>
-        <li class="page-item"  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-          <a class="page-link" (click)="getNextPageResults(pager.totalPages-1); setPage(pager.totalPages)">Last</a>
-        </li>
-      </ul>
+</div>
+  <button type="btn btn-default" (click)="openPopup()" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#myModal">
+    <i class="fa fa-plus" aria-hidden="true"></i>
+  </button>
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Subscribe for new items</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form id="form-validation">
+            <div class="form-group">
+              <label  class="form-control-label" for="name">Your name:</label>
+              <input type="text" class="form-control" placeholder="Your name" id="name" required>
+              <div class="invalid-feedback">Shouldn't be empty.</div>
+            </div>
+            <div class="form-group">
+              <label  class="form-control-label" for="email">Email address:</label>
+              <input type="email" class="form-control" placeholder="Email" id="email" required>
+              <div class="invalid-feedback">Shouldn't be empty.</div>
+            </div>
+            <button type="submit" (click)="addNewRequest()" class="btn btn-primary" data-dismiss="modal">Submit</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-</div>
