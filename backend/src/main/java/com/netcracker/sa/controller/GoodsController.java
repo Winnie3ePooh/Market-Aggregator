@@ -39,21 +39,20 @@ public class GoodsController {
     @RequestMapping(path = "/getAll")
     public @ResponseBody Page<Good> getGoodForMainPage(@RequestParam(value = "page", defaultValue = "0") String page,
                                                        @RequestParam(value = "category", defaultValue = "All") String category) {
-
-
+        System.out.println(shops);
         if(category.equals("All")) {
             Page<Good> resultPage = goodRep.findByShopIn(new PageRequest(Integer.parseInt(page),18),shops);
             System.out.println(shops);
             return resultPage;
         } else {
-            Page<Good> resultPage = goodRep.findBySubcategoryCategoriesAndShopIn(new PageRequest(Integer.parseInt(page),18),shops, Long.parseLong(category));
+            Page<Good> resultPage = goodRep.findByShopInAndCategoryParentId(new PageRequest(Integer.parseInt(page),18),shops, Long.parseLong(category));
             System.out.println(shops);
             return resultPage;
         }
     };
 
     @RequestMapping(path = "/findGoods")
-    public @ResponseBody Page<Good> getGoodsByKeyword(@RequestParam(value = "keyword") String keyword,
+    public @ResponseBody Page<Good> getGoodsByKeyword(@RequestParam(value = "keyword", defaultValue = "All") String keyword,
                                                       @RequestParam(value = "page", defaultValue = "0") String page) {
         Pageable pageable = new PageRequest(Integer.parseInt(page),18);
         Page<Good> results = goodRep.findByShopInAndTitleContainsIgnoreCase(shops,keyword,pageable);
@@ -61,11 +60,12 @@ public class GoodsController {
     };
 
     @RequestMapping(path = "/findGoodsBySubcategory")
-    public @ResponseBody Page<Good> findGoodsBySubcategory(@RequestParam(value = "keyword") String keyword,
-                                                           @RequestParam(value = "subcategory") String subcategory,
+    public @ResponseBody Page<Good> findGoodsBySubcategory(@RequestParam(value = "category") String subcategory,
+                                                           @RequestParam(value = "keyword", defaultValue = "") String keyword,
                                                            @RequestParam(value = "page", defaultValue = "0") String page) {
+
         Pageable pageable = new PageRequest(Integer.parseInt(page),18);
-        Page<Good> results  = goodRep.findByShopInAndTitleContainsIgnoreCaseAndSubcategoryId(pageable, shops, keyword, Long.parseLong(subcategory));
+        Page<Good> results  = goodRep.findByShopInAndTitleContainsIgnoreCaseAndCategoryParentId(pageable, shops, keyword, Long.parseLong(subcategory));
         return results;
     };
 

@@ -25,7 +25,7 @@ public class CategoriesController {
     @RequestMapping(path = "/getAllCategories")
     public @ResponseBody
     List<Category> getAllCategories(@RequestParam(value = "region", defaultValue = "WW") String region) {
-        return (List<Category>) categoryRep.findAll();
+        return (List<Category>) categoryRep.findByParentIsNull();
     };
 
 }

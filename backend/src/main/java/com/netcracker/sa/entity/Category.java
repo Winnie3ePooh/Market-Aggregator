@@ -1,5 +1,7 @@
 package com.netcracker.sa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
@@ -16,13 +18,21 @@ public class Category {
     @NotNull
     private String name;
 
-    @OneToMany(mappedBy = "categories", fetch = FetchType.EAGER)
-    private List<Subcategory> subcategories;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category parent;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Category> categories;
 
     public Category() {}
 
     public  Category(String name) {
         this.name = name;
+    }
+    public  Category(String name, Category parent) {
+        this.name = name;
+        this.parent = parent;
     }
 
     public String getName() {
@@ -32,9 +42,13 @@ public class Category {
     public Long getId() {
         return id;
     }
+    @JsonIgnore
+    public List<Category> getCategories() {
+        return categories;
+    }
 
-    public List<Subcategory> getSubcategories() {
-        return subcategories;
+    public Category getParent() {
+        return parent;
     }
 }
 

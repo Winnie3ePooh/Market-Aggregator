@@ -16,9 +16,9 @@ public interface GoodRepository extends PagingAndSortingRepository<Good, Long> {
 
     Page<Good> findByShopIn(Pageable pageable, List<Shop> shops);
 
-    Page<Good> findBySubcategoryCategoriesAndShopIn(Pageable pageable,List<Shop> shops,Long id);
+    Page<Good> findByShopInAndCategoryParentId(Pageable pageable,List<Shop> shops,Long id);
 
-    Page<Good> findByShopInAndTitleContainsIgnoreCaseAndSubcategoryId(Pageable pageable,List<Shop> shops,String keyword,Long id);
+    Page<Good> findByShopInAndTitleContainsIgnoreCaseAndCategoryParentId(Pageable pageable,List<Shop> shops,String keyword,Long id);
 
     Good findFirstByUriOrderByIdDesc(String uri);
 

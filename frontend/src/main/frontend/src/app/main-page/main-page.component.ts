@@ -62,13 +62,23 @@ export class MainPageComponent implements OnInit {
 
   findIt(): void {
     this.mainService.setLocalKeyword(this.forFinding);
-    this.mainService.findByKeyword(this.selectedCategory, this.forFinding)
-      .then(res => this.setItems(res));
+    console.log(this.forFinding);
+    console.log('asdasdasdasdasdadadas');
+    if (typeof this.forFinding === 'undefined') {
+      console.log('1');
+      console.log(this.selectedCategory);
+      this.mainService.getRandomItems(this.selectedCategory).then(res => this.setItems(res));
+    } else {
+      console.log('2');
+      console.log(this.selectedCategory);
+      this.mainService.findByKeyword(this.selectedCategory, this.forFinding)
+        .then(res => this.setItems(res));
+    };
   };
 
   getNextPageResults(page: number): void {
     if (typeof this.forFinding === 'undefined') {
-      this.mainService.getRandomItems(page, this.selectedCategory).then(res => this.setItems(res));
+      this.mainService.getRandomItems(this.selectedCategory, page).then(res => this.setItems(res));
     } else {
       this.mainService.findByKeyword(this.selectedCategory, this.forFinding, page)
         .then(res => this.setItems(res));
@@ -114,9 +124,7 @@ export class MainPageComponent implements OnInit {
       this.shopList = res;
     });
     console.log(this.shopList);
-    this.mainService.getRandomItems(+(this.mainService.getLocalPage()) - 1,
-      this.selectedCategory,
-      this.mainService.getLocalKeyword()
+    this.mainService.getRandomItems('', +(this.mainService.getLocalPage()) - 1
     )
       .then(res => this.setItems(res));
     this.getCategories();

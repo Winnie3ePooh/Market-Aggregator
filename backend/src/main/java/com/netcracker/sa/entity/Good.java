@@ -30,11 +30,13 @@ public class Good {
     @NotNull
     private Float price;
     @NotNull
+    private String code;
+    @NotNull
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "subcategory_id")
-    private Subcategory subcategory;
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @OneToMany(mappedBy = "good")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -47,16 +49,17 @@ public class Good {
     public Good(){};
 
     public Good(String uri, String title, String description, String creationDate, String endDate,
-                Float price,
-                String url, Subcategory subcategory, Shop shop){
+                Float price, String code,
+                String url, Category category, Shop shop){
         this.uri = uri;
         this.title = title;
         this.description = description;
         this.creationDate = LocalDate.parse(creationDate);
         this.endDate = LocalDate.parse(endDate);
         this.price = price;
+        this.code = code;
         this.url = url;
-        this.subcategory = subcategory;
+        this.category = category;
         this.shop = shop;
     };
 
@@ -79,13 +82,18 @@ public class Good {
         return url;
     }
 
+    public String getCode() {
+        return code;
+    }
+
     public LocalDate getEndDate() {
         return endDate;
     }
 
-    public Subcategory getSubcategory() {
-        return subcategory;
+    public Category getCategory() {
+        return category;
     }
+
     public Shop getShop() {return shop; };
 
     @Transactional

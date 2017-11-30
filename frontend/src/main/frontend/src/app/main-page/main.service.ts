@@ -21,9 +21,9 @@ export class MainService {
         });
   };
 
-  findByKeyword(category: string = '', keyword: string = ' ', page = 0) {
-    return this.http.get('/api/findGoods?category=' + category
-    + '&keyword=' + keyword.split(' ').join('%20')
+  findByKeyword(category: string = '', keyword: string = '', page = 0) {
+    return this.http.get('/api/findGoodsBySubcategory?category=' + category
+    + '&keyword=' + keyword
     + '&page=' + page).toPromise()
       .then(
         res => {
@@ -33,9 +33,8 @@ export class MainService {
       )
   }
 
-  getRandomItems(page = 0, category: string, keyword = '') {
-    return this.http.get('/api/findGoods?category=' + category
-    + '&keyword=' + keyword + '&page=' + page).toPromise()
+  getRandomItems(category: string = 'All', page = 0) {
+    return this.http.get('/api/getAll?page=' + page + '&category=' + category).toPromise()
       .then(
         res => {
           this.items = res.json().content;
