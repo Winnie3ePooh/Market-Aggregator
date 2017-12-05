@@ -109,7 +109,7 @@ export class MainPageComponent implements OnInit {
     this.newRequest.name = $('#name').val();
     this.newRequest.email = $('#email').val();
     this.newRequest.keyword = this.forFinding;
-    // this.mainService.addNewRequest(this.newRequest);
+    this.mainService.addNewRequest(this.newRequest);
   };
 
   ngOnInit(): void {

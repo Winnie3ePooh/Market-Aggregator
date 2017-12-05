@@ -63,10 +63,16 @@ public class GoodsController {
     public @ResponseBody Page<Good> findGoodsBySubcategory(@RequestParam(value = "category") String subcategory,
                                                            @RequestParam(value = "keyword", defaultValue = "") String keyword,
                                                            @RequestParam(value = "page", defaultValue = "0") String page) {
-
         Pageable pageable = new PageRequest(Integer.parseInt(page),18);
-        Page<Good> results  = goodRep.findByShopInAndTitleContainsIgnoreCaseAndCategoryParentId(pageable, shops, keyword, Long.parseLong(subcategory));
-        return results;
+        try {
+            Page<Good> results  = goodRep.findByShopInAndTitleContainsIgnoreCaseAndCategoryParentId(pageable, shops, keyword, Long.parseLong(subcategory));
+            return results;
+        } catch (Exception e) {
+            Page<Good> results  = goodRep.findByShopInAndTitleContainsIgnoreCase(pageable, shops, keyword);
+            return results;
+        }
+
+
     };
 
     @RequestMapping(path = "/setShops", method = RequestMethod.POST)

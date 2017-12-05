@@ -75,4 +75,9 @@ export class MainService {
       .then(res => console.log(''));
   }
 
+  addNewRequest(newRequest) {
+    this.http.post('/api/requests/addNewRequest', newRequest).toPromise()
+      .then(res => console.log(res))
+  };
+
 }
