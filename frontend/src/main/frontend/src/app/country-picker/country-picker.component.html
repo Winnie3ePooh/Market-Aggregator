@@ -1,0 +1,13 @@
+<div class="text-center">
+  <h1>Выберите страну</h1>
+  <select [(ngModel)]="selectedCountry" class="form-group">
+    <option *ngFor="let country of countries" [ngValue]="country" >
+      <a [routerLink]="['', country.name]">
+        {{country.name}}
+      </a>
+    </option>
+  </select>
+  <button (click)="goToMainPage()">
+    Отправить!
+  </button>
+</div>

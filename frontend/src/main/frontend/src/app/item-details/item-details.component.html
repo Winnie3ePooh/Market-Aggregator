@@ -1,0 +1,51 @@
+<div class="search-menu text-center">
+  <div class="row align-items-center justify-content-center">
+    <h1 class="text-center">Что хотите найти?</h1>
+  </div>
+  <div class="row align-items-center justify-content-center">
+    <div class="col">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for..." #inp [(ngModel)]="forFinding" [ngModelOptions]="{standalone: true}" (keyup.enter)="findIt()">
+        <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button" (click)="findIt()">Go!</button>
+              </span>
+      </div>
+    </div>
+  </div>
+</div><!-- /cont -->
+
+<div class="main-component">
+  <div class="card">
+    <div class="container-fliud">
+      <div class="wrapper row">
+        <div class="preview col-md-6">
+          <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+        </div>
+        <div class="details col-md-6">
+          <h3 class="product-title">{{item.title}}</h3>
+          <div class="rating">
+            <div class="stars">
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star checked"></span>
+              <span class="fa fa-star"></span>
+              <span class="fa fa-star"></span>
+            </div>
+            <span class="review-no">41 reviews</span>
+          </div>
+          <p class="product-description">{{item.description}}</p>
+          <h4 class="price">current price: <span>{{item.cost}}</span></h4>
+          <div class="action" style="position: absolute; bottom: 0px;">
+            <button class="add-to-cart btn btn-default" type="button"><a href="{{item.url}}">Просмотреть</a></button>
+            <button class="like btn btn-default" type="button"><span class="fa fa-bell"></span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="back">
+    <div class="action">
+      <button class="add-to-cart btn btn-default" type="button"><a (click)="goBack()"><span class="fa fa-arrow-left"></span> Назад</a></button>
+    </div>
+  </div>
+</div>
