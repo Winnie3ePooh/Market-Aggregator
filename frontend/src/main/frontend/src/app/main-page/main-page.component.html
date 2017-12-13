@@ -64,11 +64,18 @@
     </div>
     <div class="col">
       <div class="row">
-          <ul class="list-inline">
-            <li class="list-inline-item">Сортировать:</li>
-            <li class="list-inline-item">по цене</li>
-            <li class="list-inline-item">по дате</li>
-          </ul>
+          <div class="col-1"></div>
+          <div class="col">
+            <ul class="list-inline">
+              <li class="list-inline-item">Sort by:</li>
+              <li class="list-inline-item"><button id="b-2" class="btn-new btn-new-outlined btn-new-theme" (click)="updateSort(2)">price (asc.)</button></li>
+              <li class="list-inline-item"><button id="b-3" class="btn-new btn-new-outlined btn-new-theme" (click)="updateSort(3)">price (desc.)</button></li>
+              <li class="list-inline-item"><button id="b-4" class="btn-new btn-new-outlined btn-new-theme" (click)="updateSort(4)">date (new)</button></li>
+              <li class="list-inline-item"><button id="b-5" class="btn-new btn-new-outlined btn-new-theme" (click)="updateSort(5)">date (old)</button></li>
+              <li class="list-inline-item"><button id="b-1" class="btn-new btn-new-outlined btn-new-theme" (click)="updateSort(-1)">reset</button></li>
+            </ul>
+          </div>
+
       </div>
       <div *ngIf="foundItems.length !== 0;then content else other_content">here is ignored</div>
       <ng-template #content>

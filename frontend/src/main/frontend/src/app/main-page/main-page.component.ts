@@ -32,6 +32,7 @@ export class MainPageComponent implements OnInit {
   private selectedCategory: string;
   private selectedShops: number[];
   private newRequest = {email: '', name: '', keyword: ''};
+  private sort: number;
 
   mySettings: IMultiSelectSettings = {
     fixedTitle: true,
@@ -48,6 +49,11 @@ export class MainPageComponent implements OnInit {
     private pagerService: PageService ) { this.route = activateRoute;
   }
 
+  updateSort(vl) {
+    this.sort = vl;
+    this.findIt();
+  }
+
   setItems(res): void {
     this.foundItems = res.content;
     console.log(this.foundItems);
@@ -62,25 +68,19 @@ export class MainPageComponent implements OnInit {
 
   findIt(): void {
     this.mainService.setLocalKeyword(this.forFinding);
-    console.log(this.forFinding);
-    console.log('asdasdasdasdasdadadas');
     if (typeof this.forFinding === 'undefined') {
-      console.log('1');
-      console.log(this.selectedCategory);
-      this.mainService.getRandomItems(this.selectedCategory).then(res => this.setItems(res));
+      this.mainService.getRandomItems(this.selectedCategory, 0, this.sort).then(res => this.setItems(res));
     } else {
-      console.log('2');
-      console.log(this.selectedCategory);
-      this.mainService.findByKeyword(this.selectedCategory, this.forFinding)
+      this.mainService.findByKeyword(this.selectedCategory, this.forFinding, 0, this.sort)
         .then(res => this.setItems(res));
     };
   };
 
   getNextPageResults(page: number): void {
     if (typeof this.forFinding === 'undefined') {
-      this.mainService.getRandomItems(this.selectedCategory, page).then(res => this.setItems(res));
+      this.mainService.getRandomItems(this.selectedCategory, page, this.sort).then(res => this.setItems(res));
     } else {
-      this.mainService.findByKeyword(this.selectedCategory, this.forFinding, page)
+      this.mainService.findByKeyword(this.selectedCategory, this.forFinding, page, this.sort)
         .then(res => this.setItems(res));
     }
   }
@@ -118,15 +118,12 @@ export class MainPageComponent implements OnInit {
       .subscribe((location) => {
         this.location = location;
       });
-    console.log('asdasdasdasd');
-    console.log(this.location);
     this.mainService.getShops(this.location).then(res => {
       this.shopList = res;
+      this.mainService.getRandomItems('', +(this.mainService.getLocalPage()) - 1
+      )
+        .then(resp => this.setItems(resp));
     });
-    console.log(this.shopList);
-    this.mainService.getRandomItems('', +(this.mainService.getLocalPage()) - 1
-    )
-      .then(res => this.setItems(res));
     this.getCategories();
   }
 }

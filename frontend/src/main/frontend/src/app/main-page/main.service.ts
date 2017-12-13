@@ -21,10 +21,10 @@ export class MainService {
         });
   };
 
-  findByKeyword(category: string = '', keyword: string = '', page = 0) {
+  findByKeyword(category: string = '', keyword: string = '', page = 0, sort = -1) {
     return this.http.get('/api/findGoodsBySubcategory?category=' + category
     + '&keyword=' + keyword
-    + '&page=' + page).toPromise()
+    + '&page=' + page + '&sort=' + sort).toPromise()
       .then(
         res => {
           this.items = res.json().content;
@@ -33,8 +33,8 @@ export class MainService {
       )
   }
 
-  getRandomItems(category: string = 'All', page = 0) {
-    return this.http.get('/api/getAll?page=' + page + '&category=' + category).toPromise()
+  getRandomItems(category: string = 'All', page = 0, sort = -1) {
+    return this.http.get('/api/getAll?page=' + page + '&category=' + category + '&sort=' + sort).toPromise()
       .then(
         res => {
           this.items = res.json().content;
