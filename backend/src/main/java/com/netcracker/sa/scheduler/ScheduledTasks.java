@@ -31,7 +31,7 @@ public class ScheduledTasks {
     @Autowired
     private GoodRepository goodRep;
 
-    @Scheduled(fixedRate = 10000)
+    //@Scheduled(fixedRate = 10000)
     public void findRequestsAndSend(){
         List<GoodRequest> requests = (List<GoodRequest>) goodReqRep.findAll();
         if(!requests.isEmpty()){
